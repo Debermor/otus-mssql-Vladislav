@@ -1,68 +1,69 @@
-/*
-Äîìàøíåå çàäàíèå ïî êóðñó MS SQL Server Developer â OTUS.
-Çàíÿòèå "02 - Îïåðàòîð SELECT è ïðîñòûå ôèëüòðû, JOIN".
+ï»¿/*
+Ð”Ð¾Ð¼Ð°ÑˆÐ½ÐµÐµ Ð·Ð°Ð´Ð°Ð½Ð¸Ðµ Ð¿Ð¾ ÐºÑƒÑ€ÑÑƒ MS SQL Server Developer Ð² OTUS.
+Ð—Ð°Ð½ÑÑ‚Ð¸Ðµ "02 - ÐžÐ¿ÐµÑ€Ð°Ñ‚Ð¾Ñ€ SELECT Ð¸ Ð¿Ñ€Ð¾ÑÑ‚Ñ‹Ðµ Ñ„Ð¸Ð»ÑŒÑ‚Ñ€Ñ‹, JOIN".
 
-Çàäàíèÿ âûïîëíÿþòñÿ ñ èñïîëüçîâàíèåì áàçû äàííûõ WideWorldImporters.
+Ð—Ð°Ð´Ð°Ð½Ð¸Ñ Ð²Ñ‹Ð¿Ð¾Ð»Ð½ÑÑŽÑ‚ÑÑ Ñ Ð¸ÑÐ¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ð½Ð¸ÐµÐ¼ Ð±Ð°Ð·Ñ‹ Ð´Ð°Ð½Ð½Ñ‹Ñ… WideWorldImporters.
 
-Áýêàï ÁÄ WideWorldImporters ìîæíî ñêà÷àòü îòñþäà:
+Ð‘ÑÐºÐ°Ð¿ Ð‘Ð” WideWorldImporters Ð¼Ð¾Ð¶Ð½Ð¾ ÑÐºÐ°Ñ‡Ð°Ñ‚ÑŒ Ð¾Ñ‚ÑÑŽÐ´Ð°:
 https://github.com/Microsoft/sql-server-samples/releases/download/wide-world-importers-v1.0/WideWorldImporters-Full.bak
 
-Îïèñàíèå WideWorldImporters îò Microsoft:
+ÐžÐ¿Ð¸ÑÐ°Ð½Ð¸Ðµ WideWorldImporters Ð¾Ñ‚ Microsoft:
 * https://docs.microsoft.com/ru-ru/sql/samples/wide-world-importers-what-is
 * https://docs.microsoft.com/ru-ru/sql/samples/wide-world-importers-oltp-database-catalog
 */
 
 -- ---------------------------------------------------------------------------
--- Çàäàíèå - íàïèñàòü âûáîðêè äëÿ ïîëó÷åíèÿ óêàçàííûõ íèæå äàííûõ.
+-- Ð—Ð°Ð´Ð°Ð½Ð¸Ðµ - Ð½Ð°Ð¿Ð¸ÑÐ°Ñ‚ÑŒ Ð²Ñ‹Ð±Ð¾Ñ€ÐºÐ¸ Ð´Ð»Ñ Ð¿Ð¾Ð»ÑƒÑ‡ÐµÐ½Ð¸Ñ ÑƒÐºÐ°Ð·Ð°Ð½Ð½Ñ‹Ñ… Ð½Ð¸Ð¶Ðµ Ð´Ð°Ð½Ð½Ñ‹Ñ….
 -- ---------------------------------------------------------------------------
 
 USE OTUS_WideWorldImporters
 
 /*
-1. Âñå òîâàðû, â íàçâàíèè êîòîðûõ åñòü "urgent" èëè íàçâàíèå íà÷èíàåòñÿ ñ "Animal".
-Âûâåñòè: ÈÄ òîâàðà (StockItemID), íàèìåíîâàíèå òîâàðà (StockItemName).
-Òàáëèöû: Warehouse.StockItems.
+1. Ð’ÑÐµ Ñ‚Ð¾Ð²Ð°Ñ€Ñ‹, Ð² Ð½Ð°Ð·Ð²Ð°Ð½Ð¸Ð¸ ÐºÐ¾Ñ‚Ð¾Ñ€Ñ‹Ñ… ÐµÑÑ‚ÑŒ "urgent" Ð¸Ð»Ð¸ Ð½Ð°Ð·Ð²Ð°Ð½Ð¸Ðµ Ð½Ð°Ñ‡Ð¸Ð½Ð°ÐµÑ‚ÑÑ Ñ "Animal".
+Ð’Ñ‹Ð²ÐµÑÑ‚Ð¸: Ð˜Ð” Ñ‚Ð¾Ð²Ð°Ñ€Ð° (StockItemID), Ð½Ð°Ð¸Ð¼ÐµÐ½Ð¾Ð²Ð°Ð½Ð¸Ðµ Ñ‚Ð¾Ð²Ð°Ñ€Ð° (StockItemName).
+Ð¢Ð°Ð±Ð»Ð¸Ñ†Ñ‹: Warehouse.StockItems.
 */
 
 select 
 	 StockItemID
 	,StockItemName
 from Warehouse.StockItems
-where StockItemName like '%urgent%' or StockItemName like '%Animal%'
+where StockItemName like '%urgent%' or StockItemName like 'Animal%' -- Ð¿Ð¾Ð¿Ñ€Ð°Ð²Ð¸Ð»
 
 /*
-2. Ïîñòàâùèêîâ (Suppliers), ó êîòîðûõ íå áûëî ñäåëàíî íè îäíîãî çàêàçà (PurchaseOrders).
-Ñäåëàòü ÷åðåç JOIN, ñ ïîäçàïðîñîì çàäàíèå ïðèíÿòî íå áóäåò.
-Âûâåñòè: ÈÄ ïîñòàâùèêà (SupplierID), íàèìåíîâàíèå ïîñòàâùèêà (SupplierName).
-Òàáëèöû: Purchasing.Suppliers, Purchasing.PurchaseOrders.
-Ïî êàêèì êîëîíêàì äåëàòü JOIN ïîäóìàéòå ñàìîñòîÿòåëüíî.
+2. ÐŸÐ¾ÑÑ‚Ð°Ð²Ñ‰Ð¸ÐºÐ¾Ð² (Suppliers), Ñƒ ÐºÐ¾Ñ‚Ð¾Ñ€Ñ‹Ñ… Ð½Ðµ Ð±Ñ‹Ð»Ð¾ ÑÐ´ÐµÐ»Ð°Ð½Ð¾ Ð½Ð¸ Ð¾Ð´Ð½Ð¾Ð³Ð¾ Ð·Ð°ÐºÐ°Ð·Ð° (PurchaseOrders).
+Ð¡Ð´ÐµÐ»Ð°Ñ‚ÑŒ Ñ‡ÐµÑ€ÐµÐ· JOIN, Ñ Ð¿Ð¾Ð´Ð·Ð°Ð¿Ñ€Ð¾ÑÐ¾Ð¼ Ð·Ð°Ð´Ð°Ð½Ð¸Ðµ Ð¿Ñ€Ð¸Ð½ÑÑ‚Ð¾ Ð½Ðµ Ð±ÑƒÐ´ÐµÑ‚.
+Ð’Ñ‹Ð²ÐµÑÑ‚Ð¸: Ð˜Ð” Ð¿Ð¾ÑÑ‚Ð°Ð²Ñ‰Ð¸ÐºÐ° (SupplierID), Ð½Ð°Ð¸Ð¼ÐµÐ½Ð¾Ð²Ð°Ð½Ð¸Ðµ Ð¿Ð¾ÑÑ‚Ð°Ð²Ñ‰Ð¸ÐºÐ° (SupplierName).
+Ð¢Ð°Ð±Ð»Ð¸Ñ†Ñ‹: Purchasing.Suppliers, Purchasing.PurchaseOrders.
+ÐŸÐ¾ ÐºÐ°ÐºÐ¸Ð¼ ÐºÐ¾Ð»Ð¾Ð½ÐºÐ°Ð¼ Ð´ÐµÐ»Ð°Ñ‚ÑŒ JOIN Ð¿Ð¾Ð´ÑƒÐ¼Ð°Ð¹Ñ‚Ðµ ÑÐ°Ð¼Ð¾ÑÑ‚Ð¾ÑÑ‚ÐµÐ»ÑŒÐ½Ð¾.
 */
 
 select
 	 s.SupplierID
 	,s.SupplierName
 from Purchasing.Suppliers as s
-inner join Purchasing.PurchaseOrders as po on po.SupplierID = s.SupplierID
+left join Purchasing.PurchaseOrders as po on po.SupplierID = s.SupplierID
+where po.SupplierID is null -- Ð”ÐµÐ»Ð°Ð» Ð² Ñ€Ð°Ð·Ð½Ñ‹Ðµ Ð´Ð½Ð¸, Ð¸Ð·Ð²Ð¸Ð½ÑÑŽÑÑŒ Ð¿Ñ€Ð¾Ð¼Ð¾Ñ€Ð³Ð°Ð»
 
 
 
 /*
-3. Çàêàçû (Orders) ñ öåíîé òîâàðà (UnitPrice) áîëåå 100$ 
-ëèáî êîëè÷åñòâîì åäèíèö (Quantity) òîâàðà áîëåå 20 øòóê
-è ïðèñóòñòâóþùåé äàòîé êîìïëåêòàöèè âñåãî çàêàçà (PickingCompletedWhen).
-Âûâåñòè:
+3. Ð—Ð°ÐºÐ°Ð·Ñ‹ (Orders) Ñ Ñ†ÐµÐ½Ð¾Ð¹ Ñ‚Ð¾Ð²Ð°Ñ€Ð° (UnitPrice) Ð±Ð¾Ð»ÐµÐµ 100$ 
+Ð»Ð¸Ð±Ð¾ ÐºÐ¾Ð»Ð¸Ñ‡ÐµÑÑ‚Ð²Ð¾Ð¼ ÐµÐ´Ð¸Ð½Ð¸Ñ† (Quantity) Ñ‚Ð¾Ð²Ð°Ñ€Ð° Ð±Ð¾Ð»ÐµÐµ 20 ÑˆÑ‚ÑƒÐº
+Ð¸ Ð¿Ñ€Ð¸ÑÑƒÑ‚ÑÑ‚Ð²ÑƒÑŽÑ‰ÐµÐ¹ Ð´Ð°Ñ‚Ð¾Ð¹ ÐºÐ¾Ð¼Ð¿Ð»ÐµÐºÑ‚Ð°Ñ†Ð¸Ð¸ Ð²ÑÐµÐ³Ð¾ Ð·Ð°ÐºÐ°Ð·Ð° (PickingCompletedWhen).
+Ð’Ñ‹Ð²ÐµÑÑ‚Ð¸:
 * OrderID
-* äàòó çàêàçà (OrderDate) â ôîðìàòå ÄÄ.ÌÌ.ÃÃÃÃ
-* íàçâàíèå ìåñÿöà, â êîòîðîì áûë ñäåëàí çàêàç
-* íîìåð êâàðòàëà, â êîòîðîì áûë ñäåëàí çàêàç
-* òðåòü ãîäà, ê êîòîðîé îòíîñèòñÿ äàòà çàêàçà (êàæäàÿ òðåòü ïî 4 ìåñÿöà)
-* èìÿ çàêàç÷èêà (Customer)
-Äîáàâüòå âàðèàíò ýòîãî çàïðîñà ñ ïîñòðàíè÷íîé âûáîðêîé,
-ïðîïóñòèâ ïåðâóþ 1000 è îòîáðàçèâ ñëåäóþùèå 100 çàïèñåé.
+* Ð´Ð°Ñ‚Ñƒ Ð·Ð°ÐºÐ°Ð·Ð° (OrderDate) Ð² Ñ„Ð¾Ñ€Ð¼Ð°Ñ‚Ðµ Ð”Ð”.ÐœÐœ.Ð“Ð“Ð“Ð“
+* Ð½Ð°Ð·Ð²Ð°Ð½Ð¸Ðµ Ð¼ÐµÑÑÑ†Ð°, Ð² ÐºÐ¾Ñ‚Ð¾Ñ€Ð¾Ð¼ Ð±Ñ‹Ð» ÑÐ´ÐµÐ»Ð°Ð½ Ð·Ð°ÐºÐ°Ð·
+* Ð½Ð¾Ð¼ÐµÑ€ ÐºÐ²Ð°Ñ€Ñ‚Ð°Ð»Ð°, Ð² ÐºÐ¾Ñ‚Ð¾Ñ€Ð¾Ð¼ Ð±Ñ‹Ð» ÑÐ´ÐµÐ»Ð°Ð½ Ð·Ð°ÐºÐ°Ð·
+* Ñ‚Ñ€ÐµÑ‚ÑŒ Ð³Ð¾Ð´Ð°, Ðº ÐºÐ¾Ñ‚Ð¾Ñ€Ð¾Ð¹ Ð¾Ñ‚Ð½Ð¾ÑÐ¸Ñ‚ÑÑ Ð´Ð°Ñ‚Ð° Ð·Ð°ÐºÐ°Ð·Ð° (ÐºÐ°Ð¶Ð´Ð°Ñ Ñ‚Ñ€ÐµÑ‚ÑŒ Ð¿Ð¾ 4 Ð¼ÐµÑÑÑ†Ð°)
+* Ð¸Ð¼Ñ Ð·Ð°ÐºÐ°Ð·Ñ‡Ð¸ÐºÐ° (Customer)
+Ð”Ð¾Ð±Ð°Ð²ÑŒÑ‚Ðµ Ð²Ð°Ñ€Ð¸Ð°Ð½Ñ‚ ÑÑ‚Ð¾Ð³Ð¾ Ð·Ð°Ð¿Ñ€Ð¾ÑÐ° Ñ Ð¿Ð¾ÑÑ‚Ñ€Ð°Ð½Ð¸Ñ‡Ð½Ð¾Ð¹ Ð²Ñ‹Ð±Ð¾Ñ€ÐºÐ¾Ð¹,
+Ð¿Ñ€Ð¾Ð¿ÑƒÑÑ‚Ð¸Ð² Ð¿ÐµÑ€Ð²ÑƒÑŽ 1000 Ð¸ Ð¾Ñ‚Ð¾Ð±Ñ€Ð°Ð·Ð¸Ð² ÑÐ»ÐµÐ´ÑƒÑŽÑ‰Ð¸Ðµ 100 Ð·Ð°Ð¿Ð¸ÑÐµÐ¹.
 
-Ñîðòèðîâêà äîëæíà áûòü ïî íîìåðó êâàðòàëà, òðåòè ãîäà, äàòå çàêàçà (âåçäå ïî âîçðàñòàíèþ).
+Ð¡Ð¾Ñ€Ñ‚Ð¸Ñ€Ð¾Ð²ÐºÐ° Ð´Ð¾Ð»Ð¶Ð½Ð° Ð±Ñ‹Ñ‚ÑŒ Ð¿Ð¾ Ð½Ð¾Ð¼ÐµÑ€Ñƒ ÐºÐ²Ð°Ñ€Ñ‚Ð°Ð»Ð°, Ñ‚Ñ€ÐµÑ‚Ð¸ Ð³Ð¾Ð´Ð°, Ð´Ð°Ñ‚Ðµ Ð·Ð°ÐºÐ°Ð·Ð° (Ð²ÐµÐ·Ð´Ðµ Ð¿Ð¾ Ð²Ð¾Ð·Ñ€Ð°ÑÑ‚Ð°Ð½Ð¸ÑŽ).
 
-Òàáëèöû: Sales.Orders, Sales.OrderLines, Sales.Customers.
+Ð¢Ð°Ð±Ð»Ð¸Ñ†Ñ‹: Sales.Orders, Sales.OrderLines, Sales.Customers.
 */
 
 with cte_orders as (
@@ -99,7 +100,7 @@ order by
 	,o.Trimester
 	,o.Order_Date
 
--- C Ïîñòðàíè÷íîé ðàçáèâêîé 
+-- C ÐŸÐ¾ÑÑ‚Ñ€Ð°Ð½Ð¸Ñ‡Ð½Ð¾Ð¹ Ñ€Ð°Ð·Ð±Ð¸Ð²ÐºÐ¾Ð¹ 
 with cte_orders as (
 select
 	  o.OrderID
@@ -137,17 +138,17 @@ offset 1000 rows
 fetch next 100 row only
 
 /*
-4. Çàêàçû ïîñòàâùèêàì (Purchasing.Suppliers),
-êîòîðûå äîëæíû áûòü èñïîëíåíû (ExpectedDeliveryDate) â ÿíâàðå 2013 ãîäà
-ñ äîñòàâêîé "Air Freight" èëè "Refrigerated Air Freight" (DeliveryMethodName)
-è êîòîðûå èñïîëíåíû (IsOrderFinalized).
-Âûâåñòè:
-* ñïîñîá äîñòàâêè (DeliveryMethodName)
-* äàòà äîñòàâêè (ExpectedDeliveryDate)
-* èìÿ ïîñòàâùèêà
-* èìÿ êîíòàêòíîãî ëèöà ïðèíèìàâøåãî çàêàç (ContactPerson)
+4. Ð—Ð°ÐºÐ°Ð·Ñ‹ Ð¿Ð¾ÑÑ‚Ð°Ð²Ñ‰Ð¸ÐºÐ°Ð¼ (Purchasing.Suppliers),
+ÐºÐ¾Ñ‚Ð¾Ñ€Ñ‹Ðµ Ð´Ð¾Ð»Ð¶Ð½Ñ‹ Ð±Ñ‹Ñ‚ÑŒ Ð¸ÑÐ¿Ð¾Ð»Ð½ÐµÐ½Ñ‹ (ExpectedDeliveryDate) Ð² ÑÐ½Ð²Ð°Ñ€Ðµ 2013 Ð³Ð¾Ð´Ð°
+Ñ Ð´Ð¾ÑÑ‚Ð°Ð²ÐºÐ¾Ð¹ "Air Freight" Ð¸Ð»Ð¸ "Refrigerated Air Freight" (DeliveryMethodName)
+Ð¸ ÐºÐ¾Ñ‚Ð¾Ñ€Ñ‹Ðµ Ð¸ÑÐ¿Ð¾Ð»Ð½ÐµÐ½Ñ‹ (IsOrderFinalized).
+Ð’Ñ‹Ð²ÐµÑÑ‚Ð¸:
+* ÑÐ¿Ð¾ÑÐ¾Ð± Ð´Ð¾ÑÑ‚Ð°Ð²ÐºÐ¸ (DeliveryMethodName)
+* Ð´Ð°Ñ‚Ð° Ð´Ð¾ÑÑ‚Ð°Ð²ÐºÐ¸ (ExpectedDeliveryDate)
+* Ð¸Ð¼Ñ Ð¿Ð¾ÑÑ‚Ð°Ð²Ñ‰Ð¸ÐºÐ°
+* Ð¸Ð¼Ñ ÐºÐ¾Ð½Ñ‚Ð°ÐºÑ‚Ð½Ð¾Ð³Ð¾ Ð»Ð¸Ñ†Ð° Ð¿Ñ€Ð¸Ð½Ð¸Ð¼Ð°Ð²ÑˆÐµÐ³Ð¾ Ð·Ð°ÐºÐ°Ð· (ContactPerson)
 
-Òàáëèöû: Purchasing.Suppliers, Purchasing.PurchaseOrders, Application.DeliveryMethods, Application.People.
+Ð¢Ð°Ð±Ð»Ð¸Ñ†Ñ‹: Purchasing.Suppliers, Purchasing.PurchaseOrders, Application.DeliveryMethods, Application.People.
 */
 
 select
@@ -157,7 +158,7 @@ select
 	,p.FullName
 from Purchasing.Suppliers				as s
 inner join Purchasing.PurchaseOrders	as po on po.SupplierID = s.SupplierID 
-												and po.ExpectedDeliveryDate like '2013-01%'
+												and po.ExpectedDeliveryDate >= '2013-01-01' and po.ExpectedDeliveryDate < '2013-02-01' -- Ð¿Ð¾Ð¿Ñ€Ð°Ð²Ð¸Ð» Ñ‚Ð°Ðº (ÐµÑ‰Ñ‘ Ð²Ð°Ñ€Ð¸Ð°Ð½Ñ‚ year(po.ExpectedDeliveryDate) = 2013 and month(po.ExpectedDeliveryDate) = 1)
 												and IsOrderFinalized = 1
 inner join Application.DeliveryMethods	as dm on dm.DeliveryMethodID = po.DeliveryMethodID
 												and DeliveryMethodName in ('Air Freight','Refrigerated Air Freight')
@@ -165,24 +166,24 @@ inner join Application.People 			as p on p.PersonID = po.ContactPersonID
 
 
 /*
-5. Äåñÿòü ïîñëåäíèõ ïðîäàæ (ïî äàòå ïðîäàæè) ñ èìåíåì êëèåíòà è èìåíåì ñîòðóäíèêà,
-êîòîðûé îôîðìèë çàêàç (SalespersonPerson).
-Ñäåëàòü áåç ïîäçàïðîñîâ.
+5. Ð”ÐµÑÑÑ‚ÑŒ Ð¿Ð¾ÑÐ»ÐµÐ´Ð½Ð¸Ñ… Ð¿Ñ€Ð¾Ð´Ð°Ð¶ (Ð¿Ð¾ Ð´Ð°Ñ‚Ðµ Ð¿Ñ€Ð¾Ð´Ð°Ð¶Ð¸) Ñ Ð¸Ð¼ÐµÐ½ÐµÐ¼ ÐºÐ»Ð¸ÐµÐ½Ñ‚Ð° Ð¸ Ð¸Ð¼ÐµÐ½ÐµÐ¼ ÑÐ¾Ñ‚Ñ€ÑƒÐ´Ð½Ð¸ÐºÐ°,
+ÐºÐ¾Ñ‚Ð¾Ñ€Ñ‹Ð¹ Ð¾Ñ„Ð¾Ñ€Ð¼Ð¸Ð» Ð·Ð°ÐºÐ°Ð· (SalespersonPerson).
+Ð¡Ð´ÐµÐ»Ð°Ñ‚ÑŒ Ð±ÐµÐ· Ð¿Ð¾Ð´Ð·Ð°Ð¿Ñ€Ð¾ÑÐ¾Ð².
 */
 
-select top 10  -- èëè ñ with ties åñëè íóæíû âñå ïàïàäàþùèå ïîä óñëîâèå äàòû
+select top 10  -- Ð¸Ð»Ð¸ Ñ with ties ÐµÑÐ»Ð¸ Ð½ÑƒÐ¶Ð½Ñ‹ Ð²ÑÐµ Ð¿Ð°Ð¿Ð°Ð´Ð°ÑŽÑ‰Ð¸Ðµ Ð¿Ð¾Ð´ ÑƒÑÐ»Ð¾Ð²Ð¸Ðµ Ð´Ð°Ñ‚Ñ‹
 	 o.OrderID
 	,c.CustomerName
 	,ContactEmployee = p.FullName
 from Sales.Orders				as o
 inner join sales.Customers		as c on c.CustomerID = o.CustomerID
-inner join Application.People	as p on p.PersonID = o.ContactPersonID
+inner join Application.People	as p on p.PersonID = o.SalespersonPersonID
 order by o.orderdate desc
 
 /*
-6. Âñå èä è èìåíà êëèåíòîâ è èõ êîíòàêòíûå òåëåôîíû,
-êîòîðûå ïîêóïàëè òîâàð "Chocolate frogs 250g".
-Èìÿ òîâàðà ñìîòðåòü â òàáëèöå Warehouse.StockItems.
+6. Ð’ÑÐµ Ð¸Ð´ Ð¸ Ð¸Ð¼ÐµÐ½Ð° ÐºÐ»Ð¸ÐµÐ½Ñ‚Ð¾Ð² Ð¸ Ð¸Ñ… ÐºÐ¾Ð½Ñ‚Ð°ÐºÑ‚Ð½Ñ‹Ðµ Ñ‚ÐµÐ»ÐµÑ„Ð¾Ð½Ñ‹,
+ÐºÐ¾Ñ‚Ð¾Ñ€Ñ‹Ðµ Ð¿Ð¾ÐºÑƒÐ¿Ð°Ð»Ð¸ Ñ‚Ð¾Ð²Ð°Ñ€ "Chocolate frogs 250g".
+Ð˜Ð¼Ñ Ñ‚Ð¾Ð²Ð°Ñ€Ð° ÑÐ¼Ð¾Ñ‚Ñ€ÐµÑ‚ÑŒ Ð² Ñ‚Ð°Ð±Ð»Ð¸Ñ†Ðµ Warehouse.StockItems.
 */
 
 select top 10  
@@ -192,7 +193,7 @@ select top 10
 	--,si.StockItemName
 from Sales.Orders							as o
 inner join sales.Customers					as c	on c.CustomerID = o.CustomerID
-inner join Purchasing.PurchaseOrderLines	as pol	on pol.PurchaseOrderID = o.OrderID -- Âðîäå èìÿ òîâàðà ìîæíî áûëî òóò ïîñìîòðåòü
-inner join Warehouse.StockItems				as si	on si.StockItemID = pol.StockItemID 
+inner join Sales.OrderLines					as ol	on ol.orderid = o.OrderID -- ÐŸÐ¾Ð¿Ñ€Ð°Ð²Ð¸Ð»
+inner join Warehouse.StockItems				as si	on si.StockItemID = ol.StockItemID 
 														and StockItemName = 'Chocolate frogs 250g'
 
