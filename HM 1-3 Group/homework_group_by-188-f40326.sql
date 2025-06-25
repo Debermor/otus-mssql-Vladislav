@@ -33,11 +33,13 @@ USE OTUS_WideWorldImporters
 select 
 	 sales_year		= year(i.InvoiceDate)
 	,sales_month	= month(i.InvoiceDate)
-	,sales_avg		= avg(ct.AmountExcludingTax)
-	,sales_sum		= sum(ct.AmountExcludingTax)
+	,sales_avg		= avg(il.UnitPrice)
+	,sales_sum		= sum(il.Quantity * il.UnitPrice) 
 from Sales.Invoices as i
-left join [Sales].[CustomerTransactions] as ct  on ct.InvoiceID = i.InvoiceID and IsFinalized = 1
+left join sales.InvoiceLines as il on il.InvoiceID = i.InvoiceID
 group by year(i.InvoiceDate),month(i.InvoiceDate)
+
+
 
 /*
 2. Отобразить все месяцы, где общая сумма продаж превысила 4 600 000
@@ -53,11 +55,11 @@ group by year(i.InvoiceDate),month(i.InvoiceDate)
 select 
 	 sales_year		= year(i.InvoiceDate)
 	,sales_month	= month(i.InvoiceDate)
-	,sales_sum		= sum(ct.AmountExcludingTax)
+	,sales_sum		= sum(il.Quantity * il.UnitPrice)
 from Sales.Invoices as i
-left join [Sales].[CustomerTransactions] as ct  on ct.InvoiceID = i.InvoiceID and IsFinalized = 1
+left join sales.InvoiceLines as il on il.InvoiceID = i.InvoiceID
 group by year(i.InvoiceDate),month(i.InvoiceDate)
-having cast(sum(ct.AmountExcludingTax) as int) > 4600000
+having cast(sum(il.Quantity * il.UnitPrice) as int) > 4600000
 
 /*
 3. Вывести сумму продаж, дату первой продажи
@@ -80,17 +82,19 @@ select
 	 sales_year		= year(i.InvoiceDate)
 	,sales_month	= month(i.InvoiceDate)
 	,Item_Name		= si.StockItemName
-	,sales_sum		= sum(ct.AmountExcludingTax)
+	,sales_sum		= sum(il.Quantity * il.UnitPrice)
 	,first_sale		= min(InvoiceDate)
-	,sales_amount	= sum(totaldryitems)
+	,sales_amount	= sum(i.totaldryitems)
 from Sales.Invoices as i
-left join [Sales].[CustomerTransactions]	as ct on ct.InvoiceID = i.InvoiceID and IsFinalized = 1
 left join [Sales].Orderlines				as ol on ol.OrderID = i.OrderID
 left join Warehouse.StockItems				as si on si.StockItemID = ol.StockItemID
+left join sales.InvoiceLines				as il on il.InvoiceID = i.InvoiceID
 group by 
 	 year(i.InvoiceDate)
 	,month(i.InvoiceDate)
 	,si.StockItemName
+having sum(i.totaldryitems) < 50
+
 
 -- ---------------------------------------------------------------------------
 -- Опционально
