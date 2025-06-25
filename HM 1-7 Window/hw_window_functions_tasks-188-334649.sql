@@ -38,10 +38,11 @@ USE WideWorldImporters
 Нарастающий итог должен быть без оконной функции.
 */
 
+
 with cte_sum_by_month as (
 select 
   format(i.InvoiceDate, 'yyyyMM') as xmonth
- ,sum(ExtendedPrice) as sum_price
+ ,sum(il.UnitPrice * il.Quantity) as sum_price
 from [Sales].[Invoices] as i
 inner join [Sales].[InvoiceLines] as il on il.InvoiceID = i.InvoiceID
 where i.InvoiceDate >= '2015-01-01'
@@ -49,16 +50,16 @@ group by format(i.InvoiceDate, 'yyyyMM')
 --order by format(i.InvoiceDate, 'yyyyMM')
 ),
 cte_lag as (
-select cte.xmonth, sum(cte2.sum_price) as month_by_month
+select cte.xmonth, sum(cte2.sum_price) as month_by_month,cte.sum_price
 from cte_sum_by_month as cte
 inner join cte_sum_by_month as cte2 on cte2.xmonth <= cte.xmonth
-group by cte.xmonth
+group by cte.xmonth,cte.sum_price
 )
 select distinct
 	 si.InvoiceID
 	,CustomerName
 	,si.InvoiceDate
-	,sum(sil.ExtendedPrice) as ExtendedPrice
+	,sum_price
 	,cte.month_by_month
 from [Sales].[Invoices] as si 
 inner join cte_lag as cte on cte.xmonth = format(si.InvoiceDate, 'yyyyMM')
@@ -69,6 +70,7 @@ group by
 	,CustomerName
 	,si.InvoiceDate
 	,cte.month_by_month
+	,sum_price
 order by si.InvoiceDate
 
 
@@ -80,7 +82,7 @@ order by si.InvoiceDate
 ;with cte_price as (
 select 
   format(i.InvoiceDate, 'yyyyMM') as xmonth
- ,sum(ExtendedPrice) as sum_price
+ ,sum(il.UnitPrice * il.Quantity) as sum_price
 from [Sales].[Invoices] as i
 inner join [Sales].[InvoiceLines] as il on il.InvoiceID = i.InvoiceID
 where i.InvoiceDate >= '2015-01-01'
