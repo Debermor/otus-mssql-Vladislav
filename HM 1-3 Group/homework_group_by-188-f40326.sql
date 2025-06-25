@@ -84,16 +84,15 @@ select
 	,Item_Name		= si.StockItemName
 	,sales_sum		= sum(il.Quantity * il.UnitPrice)
 	,first_sale		= min(InvoiceDate)
-	,sales_amount	= sum(i.totaldryitems)
+	,sales_amount	= sum(il.Quantity)
 from Sales.Invoices as i
-left join [Sales].Orderlines				as ol on ol.OrderID = i.OrderID
-left join Warehouse.StockItems				as si on si.StockItemID = ol.StockItemID
 left join sales.InvoiceLines				as il on il.InvoiceID = i.InvoiceID
+left join Warehouse.StockItems				as si on si.StockItemID = il.StockItemID
 group by 
 	 year(i.InvoiceDate)
 	,month(i.InvoiceDate)
 	,si.StockItemName
-having sum(i.totaldryitems) < 50
+having sum(il.Quantity) < 50
 
 
 -- ---------------------------------------------------------------------------

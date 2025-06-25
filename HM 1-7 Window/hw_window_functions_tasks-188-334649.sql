@@ -153,10 +153,18 @@ select
 	,StockItemName
 	,Brand
 	,UnitPrice
-
-	,count(StockItemID) over ()
-	,* 
+	,row_number() over (partition by left(StockItemName,1) order by StockItemName) as Alphabet_row
+	,count(StockItemID) over () as Total_Items
+	,count(*) over (partition by left(StockItemName,1)) as First_letter_count
+	,lead(StockItemID) over (order by StockItemName) as Next_ItemID
+	,lag(StockItemID) over (order by StockItemName) as Prev_ItemID
+	,isnull(
+		lag(StockItemName,2) over (order by StockItemName)
+		,'No items'
+	 ) as Name_Lag_2
+	,NTILE(30) over (order by TypicalWeightPerUnit) as Weight_Goup
 from [Warehouse].[StockItems]
+
 
 /*
 5. По каждому сотруднику выведите последнего клиента, которому сотрудник что-то продал.
