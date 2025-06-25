@@ -162,7 +162,7 @@ select
 		lag(StockItemName,2) over (order by StockItemName)
 		,'No items'
 	 ) as Name_Lag_2
-	,NTILE(30) over (order by TypicalWeightPerUnit) as Weight_Goup
+	,ntile(30) over (order by TypicalWeightPerUnit) as Weight_Goup
 from [Warehouse].[StockItems]
 
 
@@ -170,14 +170,59 @@ from [Warehouse].[StockItems]
 5. По каждому сотруднику выведите последнего клиента, которому сотрудник что-то продал.
    В результатах должны быть ид и фамилия сотрудника, ид и название клиента, дата продажи, сумму сделки.
 */
+;with cte_rn as (
+select 
+	 ap.PersonID
+	,ap.FullName
+	,so.CustomerID
+	,sc.CustomerName
+	,so.OrderDate
+	,sum(sol.quantity * sol.unitprice) as amount
+	,row_number() over (partition by ap.personid order by so.orderdate desc) as rn
+from [Application].[People] as ap
+inner join [Sales].[Orders] as so on so.SalespersonPersonID = ap.PersonID
+inner join [Sales].[Customers] as sc on sc.CustomerID = so.CustomerID
+inner join [Sales].[OrderLines] as sol on sol.OrderID = so.OrderID
+where ap.IsEmployee = 1
+group by
+	 ap.PersonID
+	,ap.FullName
+	,so.CustomerID
+	,sc.CustomerName
+	,so.OrderDate
+)
+select 
+	 PersonID
+	,FullName
+	,CustomerID
+	,CustomerName
+	,OrderDate
+	,amount
+from cte_rn
+where rn= 1
 
-напишите здесь свое решение
 
 /*
 6. Выберите по каждому клиенту два самых дорогих товара, которые он покупал.
 В результатах должно быть ид клиета, его название, ид товара, цена, дата покупки.
 */
-
-напишите здесь свое решение
-
-Опционально можете для каждого запроса без оконных функций сделать вариант запросов с оконными функциями и сравнить их производительность. 
+;with cte_rn as (
+select 
+	 sc.CustomerID 
+	,sc.CustomerName
+	,sol.StockItemID
+	,sol.UnitPrice
+	,so.OrderDate
+	,rank() over (partition by sc.CustomerID order by sol.unitprice desc) as rn
+from [Sales].[Customers] as sc
+inner join [Sales].[Orders] as so on so.CustomerID = sc.CustomerID
+inner join [Sales].[OrderLines] as sol on sol.OrderID = so.OrderID
+)
+select 
+	 CustomerID 
+	,CustomerName
+	,StockItemID
+	,UnitPrice
+	,OrderDate
+from cte_rn
+where rn <=2
