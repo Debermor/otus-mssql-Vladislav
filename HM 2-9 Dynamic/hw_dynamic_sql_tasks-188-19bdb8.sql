@@ -44,7 +44,6 @@ InvoiceMonth | Aakriti Byrraju    | Abel Spirlea       | Abel Tatarescu | ... (�
 declare @SQL nvarchar(max);
 declare @People nvarchar(max) = N'';
 
--- формируем список клиентов для столбцов
 select @People = @People + N',' + quotename(customername) 
 from (select distinct customername from sales.customers) as cust
 order by customername;
@@ -72,5 +71,4 @@ pivot
 ) as pivottable
 order by  year(InvoiceMonth),month(InvoiceMonth)';
 
--- выполняем динамический sql
 exec sp_executesql @sql;
