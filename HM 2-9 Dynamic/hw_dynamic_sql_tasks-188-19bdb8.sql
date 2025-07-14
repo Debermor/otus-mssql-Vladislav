@@ -18,7 +18,7 @@ https://github.com/Microsoft/sql-server-samples/releases/tag/wide-world-importer
 -- Задание - написать выборки для получения указанных ниже данных.
 -- ---------------------------------------------------------------------------
 
-USE WideWorldImporters
+USE otus_WideWorldImporters
 
 /*
 
@@ -41,5 +41,36 @@ InvoiceMonth | Aakriti Byrraju    | Abel Spirlea       | Abel Tatarescu | ... (�
 -------------+--------------------+--------------------+----------------+----------------------
 */
 
+declare @SQL nvarchar(max);
+declare @People nvarchar(max) = N'';
 
-напишите здесь свое решение
+-- формируем список клиентов для столбцов
+select @People = @People + N',' + quotename(customername) 
+from (select distinct customername from sales.customers) as cust
+order by customername;
+
+set @people = stuff(@People, 1, 1, N'');
+
+set @sql = N'
+select 
+    format(invoicemonth, ''dd.MM.yyyy'') as invoicemonth, 
+    ' + @People + '
+from 
+(
+    select 
+        datefromparts(year(i.invoicedate), month(i.invoicedate), 1) as invoicemonth,
+        c.customername,
+        count(*) as purchasecount
+    from sales.invoices as i
+    inner join sales.customers as c on i.customerid = c.customerid
+    group by datefromparts(year(i.invoicedate), month(i.invoicedate), 1), c.customername
+) as sourcetable
+pivot
+(
+    sum(purchasecount)
+    for customername in (' + @People + ')
+) as pivottable
+order by  year(InvoiceMonth),month(InvoiceMonth)';
+
+-- выполняем динамический sql
+exec sp_executesql @sql;
