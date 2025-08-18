@@ -18,8 +18,6 @@ https://github.com/Microsoft/sql-server-samples/releases/tag/wide-world-importer
 -- Задание - написать выборки для получения указанных ниже данных.
 -- ---------------------------------------------------------------------------
 
-USE WideWorldImporters
-
 /*
 1. Довставлять в базу пять записей используя insert в таблицу Customers или Suppliers 
 */
@@ -27,41 +25,41 @@ USE WideWorldImporters
 select * from [Sales].[Customers]
 
 insert into [Sales].[Customers](
- CustomerName
-,BillToCustomerID
-,CustomerCategoryID
-,BuyingGroupID
-,PrimaryContactPersonID
-,AlternateContactPersonID
-,DeliveryMethodID
-,DeliveryCityID
-,PostalCityID
-,CreditLimit
-,AccountOpenedDate
-,StandardDiscountPercentage
-,IsStatementSent
-,IsOnCreditHold
-,PaymentDays
-,PhoneNumber
-,FaxNumber
-,DeliveryRun
-,RunPosition
-,WebsiteURL
-,DeliveryAddressLine1
-,DeliveryAddressLine2
-,DeliveryPostalCode
-,DeliveryLocation
-,PostalAddressLine1
-,PostalAddressLine2
-,PostalPostalCode
-,LastEditedBy
+	 CustomerName
+	,BillToCustomerID
+	,CustomerCategoryID
+	,BuyingGroupID
+	,PrimaryContactPersonID
+	,AlternateContactPersonID
+	,DeliveryMethodID
+	,DeliveryCityID
+	,PostalCityID
+	,CreditLimit
+	,AccountOpenedDate
+	,StandardDiscountPercentage
+	,IsStatementSent
+	,IsOnCreditHold
+	,PaymentDays
+	,PhoneNumber
+	,FaxNumber
+	,DeliveryRun
+	,RunPosition
+	,WebsiteURL
+	,DeliveryAddressLine1
+	,DeliveryAddressLine2
+	,DeliveryPostalCode
+	,DeliveryLocation
+	,PostalAddressLine1
+	,PostalAddressLine2
+	,PostalPostalCode
+	,LastEditedBy
 )
 values 
- (N'Agrita Abele1', 1061,5, NULL, 3261,NULL,3,19881, 19881,1600.00, '2016-05-07',0.000, 0, 0, 7, N'(206) 555-0100', N'(206) 555-0101',NULL, NULL, N'http://www.microsoft.com/',N'Shop 12',N'652 Victoria Lane',N'90243', 0xE6100000010C11154FE2182D4740159ADA087A035FC0, N'PO Box 8112',N'Milicaville', N'90243',1	)
-,(N'Agrita Abele2', 1061,5, NULL, 3261,NULL,3,19881, 19881,1600.00, '2016-05-07',0.000, 0, 0, 7, N'(206) 555-0100', N'(206) 555-0101',NULL, NULL, N'http://www.microsoft.com/',N'Shop 12',N'652 Victoria Lane',N'90243', 0xE6100000010C11154FE2182D4740159ADA087A035FC0, N'PO Box 8112',N'Milicaville', N'90243',1	)
-,(N'Agrita Abele3', 1061,5, NULL, 3261,NULL,3,19881, 19881,1600.00, '2016-05-07',0.000, 0, 0, 7, N'(206) 555-0100', N'(206) 555-0101',NULL, NULL, N'http://www.microsoft.com/',N'Shop 12',N'652 Victoria Lane',N'90243', 0xE6100000010C11154FE2182D4740159ADA087A035FC0, N'PO Box 8112',N'Milicaville', N'90243',1	)
-,(N'Agrita Abele4', 1061,5, NULL, 3261,NULL,3,19881, 19881,1600.00, '2016-05-07',0.000, 0, 0, 7, N'(206) 555-0100', N'(206) 555-0101',NULL, NULL, N'http://www.microsoft.com/',N'Shop 12',N'652 Victoria Lane',N'90243', 0xE6100000010C11154FE2182D4740159ADA087A035FC0, N'PO Box 8112',N'Milicaville', N'90243',1	)
-,(N'Agrita Abele5', 1061,5, NULL, 3261,NULL,3,19881, 19881,1600.00, '2016-05-07',0.000, 0, 0, 7, N'(206) 555-0100', N'(206) 555-0101',NULL, NULL, N'http://www.microsoft.com/',N'Shop 12',N'652 Victoria Lane',N'90243', 0xE6100000010C11154FE2182D4740159ADA087A035FC0, N'PO Box 8112',N'Milicaville', N'90243',1	)
+	 (N'Agrita Abele1', 1061,5, NULL, 3261,NULL,3,19881, 19881,1600.00, '2016-05-07',0.000, 0, 0, 7, N'(206) 555-0100', N'(206) 555-0101',NULL, NULL, N'http://www.microsoft.com/',N'Shop 12',N'652 Victoria Lane',N'90243', 0xE6100000010C11154FE2182D4740159ADA087A035FC0, N'PO Box 8112',N'Milicaville', N'90243',1	)
+	,(N'Agrita Abele2', 1061,5, NULL, 3261,NULL,3,19881, 19881,1600.00, '2016-05-07',0.000, 0, 0, 7, N'(206) 555-0100', N'(206) 555-0101',NULL, NULL, N'http://www.microsoft.com/',N'Shop 12',N'652 Victoria Lane',N'90243', 0xE6100000010C11154FE2182D4740159ADA087A035FC0, N'PO Box 8112',N'Milicaville', N'90243',1	)
+	,(N'Agrita Abele3', 1061,5, NULL, 3261,NULL,3,19881, 19881,1600.00, '2016-05-07',0.000, 0, 0, 7, N'(206) 555-0100', N'(206) 555-0101',NULL, NULL, N'http://www.microsoft.com/',N'Shop 12',N'652 Victoria Lane',N'90243', 0xE6100000010C11154FE2182D4740159ADA087A035FC0, N'PO Box 8112',N'Milicaville', N'90243',1	)
+	,(N'Agrita Abele4', 1061,5, NULL, 3261,NULL,3,19881, 19881,1600.00, '2016-05-07',0.000, 0, 0, 7, N'(206) 555-0100', N'(206) 555-0101',NULL, NULL, N'http://www.microsoft.com/',N'Shop 12',N'652 Victoria Lane',N'90243', 0xE6100000010C11154FE2182D4740159ADA087A035FC0, N'PO Box 8112',N'Milicaville', N'90243',1	)
+	,(N'Agrita Abele5', 1061,5, NULL, 3261,NULL,3,19881, 19881,1600.00, '2016-05-07',0.000, 0, 0, 7, N'(206) 555-0100', N'(206) 555-0101',NULL, NULL, N'http://www.microsoft.com/',N'Shop 12',N'652 Victoria Lane',N'90243', 0xE6100000010C11154FE2182D4740159ADA087A035FC0, N'PO Box 8112',N'Milicaville', N'90243',1	)
 
 /*
 2. Удалите одну запись из Customers, которая была вами добавлена
@@ -116,8 +114,8 @@ using (
 		,PostalPostalCode
 		,LastEditedBy
     from [Sales].[Customers] AS s
-	 where CustomerName = 'Agrita Abele55'
-    ) as s on (t.CustomerName = s.CustomerName)
+	where CustomerName = 'Agrita Abele55'
+) as s on (t.CustomerName = s.CustomerName)
 when not matched by target 
     then insert 
 		( CustomerName
@@ -235,4 +233,3 @@ with
     tablock
 );
 
-select * from archive.Customers
