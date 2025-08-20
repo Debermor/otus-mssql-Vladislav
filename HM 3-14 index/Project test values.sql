@@ -1,5 +1,5 @@
 insert into Notification_User (User_Name,User_Email)
-values ('Vladislav Borodulin','debermor@gmail.com')
+values ('Vladislav Borodulin','debnipts@gmail.com')
 
 insert into Notification_Role (Role_Name)
 values ('Admin')
