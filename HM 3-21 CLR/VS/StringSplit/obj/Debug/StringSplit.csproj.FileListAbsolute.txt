@@ -1,0 +1,6 @@
+D:\Git\github\Otus\otus-mssql-Vladislav\HM 3-21 CLR\VS\StringSplit\bin\Debug\StringSplit.dll
+D:\Git\github\Otus\otus-mssql-Vladislav\HM 3-21 CLR\VS\StringSplit\bin\Debug\StringSplit.pdb
+D:\Git\github\Otus\otus-mssql-Vladislav\HM 3-21 CLR\VS\StringSplit\obj\Debug\StringSplit.csproj.AssemblyReference.cache
+D:\Git\github\Otus\otus-mssql-Vladislav\HM 3-21 CLR\VS\StringSplit\obj\Debug\StringSplit.csproj.CoreCompileInputs.cache
+D:\Git\github\Otus\otus-mssql-Vladislav\HM 3-21 CLR\VS\StringSplit\obj\Debug\StringSplit.dll
+D:\Git\github\Otus\otus-mssql-Vladislav\HM 3-21 CLR\VS\StringSplit\obj\Debug\StringSplit.pdb
